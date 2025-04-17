@@ -1,34 +1,19 @@
 import json
-
 import pandas as pd
 from tqdm import tqdm
+
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
+
 from pygments import highlight
 from pygments.lexers import JsonLexer
 from pygments.formatters import TerminalFormatter
 
 from google_play_scraper import Sort, reviews, app
 
-
-# Matplotlib inline
 # %matplotlib inline
-
-
-# config
-sns.set(style='darkgrid', palette='pastel', color_codes=True)
-sns.set_context('talk')
-
-def print_json(json_object):
-  json_str = json.dumps(
-    json_object, 
-    indent=2, 
-    sort_keys=True, 
-    default=str
-  )
-  print(highlight(json_str, JsonLexer(), TerminalFormatter()))
-
+# %config InlineBackend.figure_format='retina'
 
 app_packages = [
   'com.alloapp.yump', #allo bank
@@ -54,8 +39,17 @@ for ap in tqdm(app_packages):
 df=pd.DataFrame(app_infos)
 df.head(10)
 
+def print_json(json_object):
+  json_str = json.dumps(
+    json_object, 
+    indent=2, 
+    sort_keys=True, 
+    default=str
+  )
+  print(highlight(json_str, JsonLexer(), TerminalFormatter()))
+
 print_json(app_infos[0])
-df.to_csv('info_BANK_MOBILE_GOOGLE_PLAY_Update21092024.csv', index=None, header=True)
+df.to_csv('BankDigital/dataset/info_BANK_MOBILE_GOOGLE_PLAY_Update21092024.csv', index=None, header=True)
 
 app_reviews = []
 
@@ -74,33 +68,3 @@ for ap in tqdm(app_packages):
         r['sortOrder'] = 'most_relevant' if sort_order == Sort.MOST_RELEVANT else 'newest'
         r['appId'] = ap
       app_reviews.extend(rvs)
-
-print_json(app_reviews[1])
-
-app_reviews_df = pd.DataFrame(app_reviews)
-app_reviews_df.to_csv('Newest_REVIEW_BANK_MOBILE_GOOGLE_PLAY_Update21092024.csv', index=None, header=True)
-app_reviews_df.to_excel('Newest_REVIEW_BANK_MOBILE_GOOGLE_PLAY_Update21092024.xlsx', index=None, header=True)
-
-
-
-app_reviews_df.info()
-
-
-
-# Check for null values
-print(app_reviews_df.isnull().sum())
-
-
-
-data_df = app_reviews_df[['appId', 'content', 'score', 'at']]
-
-
-
-data_df
-
-
-
-print(data_df.isnull().sum())
-
-data_df.to_csv('REVIEW_BANK_MOBILE_Playstore_21092024.csv', index=None, header=True)
-data_df.to_excel('REVIEW_BANK_MOBILE_Playstore_21092024.xlsx', index=None, header=True)
