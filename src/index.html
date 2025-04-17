@@ -1,5 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Data</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <h1>App Information</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>App ID</th>
+                <th>Developer</th>
+                <th>Category</th>
+                <th>Score</th>
+                <th>Url</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for app in app_data %}
+            <tr>
+                <td>{{ app.title }}</td>
+                <td>{{ app.appId }}</td>
+                <td>{{ app.developer }}</td>
+                <td>{{ app.genre }}</td>
+                <td>{{ app.score }}</td>
+                <td><a href={{app.url}}>{{ app.url }}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+        <a href="/reviews">See reviews</a>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
