@@ -5,9 +5,10 @@ from pygments import highlight
 from pygments.lexers import JsonLexer
 from pygments.formatters import TerminalFormatter
 from google_play_scraper import Sort, reviews, app
-from flask import Flask, render_template, send_file, request
+from flask import Flask, render_template, send_file, request, redirect, url_for
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder=os.path.dirname(os.path.abspath(__file__)))
 
 app_packages = [
     'com.alloapp.yump',  # allo bank
@@ -29,11 +30,19 @@ def get_app_data():
     return df
 
 def get_app_reviews():
-    """Loads app reviews from CSV if available, else scrapes and saves to CSV."""
+    """Loads app reviews from CSV/XLS/XLSX if available, else scrapes and saves to CSV."""
     import os
     csv_path = os.path.join(os.path.dirname(__file__), '..', 'BankDigital', 'dataset', 'info_BANK_MOBILE_GOOGLE_PLAY_Update21092024.csv')
+    xlsx_path = os.path.splitext(csv_path)[0] + '.xlsx'
+    xls_path = os.path.splitext(csv_path)[0] + '.xls'
+    df = None
     if os.path.exists(csv_path):
         df = pd.read_csv(csv_path)
+    elif os.path.exists(xlsx_path):
+        df = pd.read_excel(xlsx_path, engine='openpyxl')
+    elif os.path.exists(xls_path):
+        df = pd.read_excel(xls_path)
+    if df is not None:
         return df.to_dict('records')
     else:
         app_reviews = []
