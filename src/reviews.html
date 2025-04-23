@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Reviews</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <style>
+        body { font-family: sans-serif; }
+        table { width: 95%; margin: 20px auto; }
+        th, td { padding: 8px; }
+        th { background: #f0f0f0; }
+    </style>
+</head>
+<body>
+    <h1>App Reviews</h1>
+    <table id="reviewsTable" class="display">
+        <thead>
+            <tr>
+                <th>App ID</th>
+                <th>User Name</th>
+                <th>Score</th>
+                <th>Content</th>
+                <th>Date</th>
+                <th>Sort Order</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for review in reviews_data %}
+            <tr>
+                <td>{{ review.appId }}</td>
+                <td>{{ review.userName }}</td>
+                <td>{{ review.score }}</td>
+                <td>{{ review.content }}</td>
+                <td>{{ review.at }}</td>
+                <td>{{ review.sortOrder }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css"/>
+    <script>
+        $(document).ready(function() {
+            $('#reviewsTable').DataTable({
+                "pageLength": 25
+            });
+        });
+    </script>
+    <a href="/">Back to App Info</a>
+</body>
+</html>
